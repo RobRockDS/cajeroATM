@@ -27,7 +27,7 @@ class Billete {
 
 var caja = [];
 var entregado = [];
-var agregado=[];
+var agregado = [];
 var dinero = 0;
 var div = 0;
 var papeles = 0;
@@ -41,6 +41,7 @@ caja.push(new Billete(10, 2));
 var mMontoDisponible = document.getElementById("mMontoDisponible");
 var mensaje = document.getElementById("mensaje");
 var resultado = document.getElementById("resultado");
+var txtMontoIngresado = document.getElementById("txtMontoIngresado");
 var b = document.getElementById("extraer");
 b.addEventListener("click", validaMontoIngresado);
 
@@ -81,7 +82,7 @@ function entregarDinero(t) {
 
 
 function validaMontoIngresado() {
-    var txtMontoIngresado = document.getElementById("txtMontoIngresado");
+
     var montoIngresado = parseInt(txtMontoIngresado.value);
     console.log("M. D.: " + verificaDisponibilidad(), montoIngresado);
     if (montoIngresado > verificaDisponibilidad()) {
@@ -110,6 +111,8 @@ function check() {
         }
     }
     mMontoDisponible.innerHTML = "<strong>DISPONIBLE EN CAJA:" + verificaDisponibilidad() + "</strong>";
+    txtMontoIngresado.value= "";
+    mensaje.innerHTML = "";
 }
 
 function verificaCorte(valor) {
@@ -138,8 +141,8 @@ function IngresoCajero() {
                             }
                             //console.log(c);
                         }
-                       checkAgregar();
-                       
+                        checkAgregar();
+
                     } else {
                         mensaje.innerHTML = "<strong>DEBE INGRESAR EN VALOR EL CORTE DE BILLETE ADMITIDO: </strong><br>";
                         for (var c of caja) {
@@ -173,4 +176,5 @@ function checkAgregar(valor, cantidad) {
     mMontoDisponible.innerHTML = "<strong>DISPONIBLE EN CAJA:" + verificaDisponibilidad() + "</strong>";
     txtValor.value = "";
     txtCantidad.value = "";
+    mensaje.innerHTML = "";
 }

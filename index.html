@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cajero automatico</title>
+</head>
+<style>
+    .main {
+        position: relative;
+        width: 100%;
+        border: lightgreen solid;
+        height: 430px;
+
+    }
+
+    .retiro {
+
+        float: left;
+        position: absolute;
+        width: 48%;
+        height: 100px;
+        text-align: center;
+        border: steelblue solid;
+        align-content: center;
+        margin-left: 20px;
+    }
+
+    .ingreso {
+        float: right;
+        width: 48%;
+        height: 100px;
+        text-align: center;
+        border: steelblue solid;
+        align-content: center;
+        margin-right: 20px
+    }
+
+    .res {
+        width: 100%;
+        border: lightgreen solid;
+    }
+
+    .men {
+        width: 100%;
+        border: lightgreen solid;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+        color: tomato;
+    }
+</style>
+
+<body>
+
+
+    <section class="main">
+        <p style="margin: 0 auto; text-align: center; padding-top: 20px;">
+            <img src="cajero.gif" alt="cajero">
+        </p>
+        <p style="margin: 0 auto; text-align: center;" id="mMontoDisponible"></p>
+        <hr>
+        <div class="retiro">
+            <p> <label for="txtMontoIngresado">INGRESE EL MONTO QUE DESEE RETIRAR</label> <br><br>
+                <input type="number" name="txtMontoIngresado" id="txtMontoIngresado" required>
+                <input type="button" name="extraer" id="extraer" value="Extraer">
+            </p>
+        </div>
+        <div class="ingreso">
+            <p> <label for="txtMontoAniadido">INGRESO DE ACTIVOS AL CAJERO</label> <br><br>
+                Valor: <input type="number" id="txtValor">
+                Cantidad: <input type="number" id="txtCantidad">
+                <input type="button" name="ingresar" id="ingresar" value="Ingresar">
+            </p>
+        </div>
+    </section>
+    <section class="men">
+        <hr>
+        <p id="mensaje"></p>
+        <hr>
+    </section>
+
+    <section class="res">
+        <p style="margin: 0 auto;" id="resultado"></p>
+        <hr>
+        <script src="cajero.js"></script>
+    </section>
+
+</body>
+
+</html>

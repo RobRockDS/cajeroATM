@@ -61,7 +61,9 @@ function verificaDisponibilidad() {
     return dineroDisponible;
 }
 
+
 function entregarDinero(t) {
+    var sw1=false;
     dinero = t;
     for (var bi of caja) {
         if (dinero > 0) {
@@ -76,7 +78,25 @@ function entregarDinero(t) {
             bi.restar(papeles);
         }
     }
-    check(t);
+    for(var e of entregado){
+        if(e.cantidad>0){
+            sw1=true;
+        }
+    }
+    if(sw1){
+        check(t);
+    }else{
+        var men="";
+        mensaje.innerHTML = "<strong>DISPONIBILIDAD DE BILLETES</strong><br>";
+        for(var c of caja){
+            if(c.cantidad<=0){
+                men="AGOTADO";
+            }else{
+                men="DISPONIBLE";
+            }
+            mensaje.innerHTML =mensaje.innerHTML+ "<strong> Bs "+c.valor+" = "+men+", </strong>";
+        }e
+    }
 
 }
 
@@ -86,7 +106,7 @@ function validaMontoIngresado() {
     var montoIngresado = parseInt(txtMontoIngresado.value);
     console.log("M. D.: " + verificaDisponibilidad(), montoIngresado);
     if (montoIngresado > verificaDisponibilidad()) {
-        mensaje.innerHTML = "<strong>NO TENEMOS DINERO DISPONIBLE PARA UN RETIRARO DE ESE MONTO</strong>";
+        mensaje.innerHTML = "<strong>NO TENEMOS DINERO DISPONIBLE PARA UN RETIRO DE ESE MONTO</strong>";
     } else {
         if (montoIngresado % 10 == 0) {
             mensaje.innerHTML = "";

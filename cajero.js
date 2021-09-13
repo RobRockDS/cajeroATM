@@ -28,6 +28,8 @@ class Billete {
 var caja = [];
 var entregado = [];
 var agregado = [];
+var cajaAux= [];
+var entregadoAux = [];
 var dinero = 0;
 var div = 0;
 var papeles = 0;
@@ -55,48 +57,73 @@ function verificaDisponibilidad() {
     var dineroDisponible = 0;
     entregado.splice(0, entregado.length);
     agregado.splice(0, agregado.length);
+    cajaAux.splice(0,cajaAux.length);
+    entregadoAux.splice(0, entregadoAux.length);
+
     for (var d of caja) {
         dineroDisponible = dineroDisponible + (d.valor * d.cantidad);
     }
     return dineroDisponible;
 }
 
+function verificarExistenciaBilletes(montoExtraer) {
+    var m = montoExtraer;
+    var division = 0;
+    var p = 0;
+    var montoTotal = 0;
+    var sw2 = false;
+    for(var ca of caja){
+        cajaAux.push(new Billete(ca.valor, ca.cantidad));
+    }
+    for (var ca1 of cajaAux) {
+        if (m > 0) {
+            division = Math.floor(m / ca1.valor);
+            if (division > ca1.cantidad) {
+                p = ca1.cantidad;
+            } else {
+                p = division;
+            }
+            entregadoAux.push(new Billete(ca1.valor, p));
+            m = m - (ca1.valor * p);
+            ca1.restar(p);
+        }
+        
+    }
+    
+    for (var en of entregadoAux) {
+        if (en.cantidad > 0) {
+            montoTotal = montoTotal + (en.valor * en.cantidad);
+        }
+    }
+    if (montoTotal == montoExtraer) {
+        sw2 = true;
+    }
+    return sw2;
+}
 
 function entregarDinero(t) {
-    var sw1=false;
     dinero = t;
+    console.log(t);
     for (var bi of caja) {
         if (dinero > 0) {
             div = Math.floor(dinero / bi.valor);
+            console.log("res: "+div+"  Valor: "+bi.valor);
             if (div > bi.cantidad) {
                 papeles = bi.cantidad;
             } else {
                 papeles = div;
             }
+            console.log("papeles= "+papeles);
             entregado.push(new Billete(bi.valor, papeles));
             dinero = dinero - (bi.valor * papeles);
             bi.restar(papeles);
         }
+        //console.log(bi);
+        
     }
-    for(var e of entregado){
-        if(e.cantidad>0){
-            sw1=true;
-        }
-    }
-    if(sw1){
-        check(t);
-    }else{
-        var men="";
-        mensaje.innerHTML = "<strong>DISPONIBILIDAD DE BILLETES</strong><br>";
-        for(var c of caja){
-            if(c.cantidad<=0){
-                men="AGOTADO";
-            }else{
-                men="DISPONIBLE";
-            }
-            mensaje.innerHTML =mensaje.innerHTML+ "<strong> Bs "+c.valor+" = "+men+", </strong>";
-        }e
-    }
+
+    check(t);
+
 
 }
 
@@ -104,13 +131,27 @@ function entregarDinero(t) {
 function validaMontoIngresado() {
 
     var montoIngresado = parseInt(txtMontoIngresado.value);
-    console.log("M. D.: " + verificaDisponibilidad(), montoIngresado);
     if (montoIngresado > verificaDisponibilidad()) {
         mensaje.innerHTML = "<strong>NO TENEMOS DINERO DISPONIBLE PARA UN RETIRO DE ESE MONTO</strong>";
     } else {
         if (montoIngresado % 10 == 0) {
             mensaje.innerHTML = "";
-            entregarDinero(montoIngresado);
+            if (verificarExistenciaBilletes(montoIngresado)) {
+                entregarDinero(montoIngresado);
+            } else {
+                var men = "";
+                mensaje.innerHTML = "<strong>DISPONIBILIDAD DE BILLETES</strong><br>";
+                for (var c of caja) {
+                    if (c.cantidad <= 0) {
+                        men = "AGOTADO";
+                        mensaje.innerHTML = mensaje.innerHTML + "<strong'> Bs " + c.valor + " = " + men + ", </strong>";
+                    } else {
+                        men = "DISPONIBLE";
+                        mensaje.innerHTML = mensaje.innerHTML + "<strong style='color: green;'> Bs " + c.valor + " = " + men + ", </strong>";
+                    }
+                    
+                }
+            }
         } else if (txtMontoIngresado.value == "") {
             mensaje.innerHTML = "<strong>DEBE INGRESAR UN MONTO PARA RETIRAR </strong>";
         }
@@ -124,14 +165,14 @@ function validaMontoIngresado() {
 
 
 function check(t) {
-    resultado.innerHTML += "<br /> USTED RETIRÓ: BS "+t+" <br />";
+    resultado.innerHTML += "<br /> USTED RETIRÓ: BS " + t + " <br />";
     for (e of entregado) {
         for (var i = 0; i < e.cantidad; i++) {
             resultado.innerHTML += "<img style='padding: 10px; text-align: left;' src=" + e.imagen.src + " />";
         }
     }
     mMontoDisponible.innerHTML = "<strong>DISPONIBLE EN CAJA:" + verificaDisponibilidad() + "</strong>";
-    txtMontoIngresado.value= "";
+    txtMontoIngresado.value = "";
     mensaje.innerHTML = "";
 }
 
@@ -161,7 +202,7 @@ function IngresoCajero() {
                             }
                             //console.log(c);
                         }
-                        checkAgregar(iValor,iCantidad);
+                        checkAgregar(iValor, iCantidad);
 
                     } else {
                         mensaje.innerHTML = "<strong>DEBE INGRESAR EN VALOR EL CORTE DE BILLETE ADMITIDO: </strong><br>";
@@ -187,7 +228,7 @@ function IngresoCajero() {
 }
 
 function checkAgregar(valor, cantidad) {
-    resultado.innerHTML += "<br /> SE AGREGO: "+cantidad+" BILLETES DE BS "+valor+"<br /> <hr>";
+    resultado.innerHTML += "<br /> SE AGREGO: " + cantidad + " BILLETES DE BS " + valor + "<br /> <hr>";
     for (e of agregado) {
         for (var i = 0; i < e.cantidad; i++) {
             resultado.innerHTML += "<img style='padding: 10px; text-align: right;' src=" + e.imagen.src + " />";

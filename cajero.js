@@ -76,7 +76,7 @@ function entregarDinero(t) {
             bi.restar(papeles);
         }
     }
-    check();
+    check(t);
 
 }
 
@@ -103,8 +103,8 @@ function validaMontoIngresado() {
 }
 
 
-function check() {
-    resultado.innerHTML += "<br /> USTED RETIRÓ: <br />";
+function check(t) {
+    resultado.innerHTML += "<br /> USTED RETIRÓ: BS "+t+" <br />";
     for (e of entregado) {
         for (var i = 0; i < e.cantidad; i++) {
             resultado.innerHTML += "<img style='padding: 10px; text-align: left;' src=" + e.imagen.src + " />";
@@ -141,7 +141,7 @@ function IngresoCajero() {
                             }
                             //console.log(c);
                         }
-                        checkAgregar();
+                        checkAgregar(iValor,iCantidad);
 
                     } else {
                         mensaje.innerHTML = "<strong>DEBE INGRESAR EN VALOR EL CORTE DE BILLETE ADMITIDO: </strong><br>";
@@ -167,7 +167,7 @@ function IngresoCajero() {
 }
 
 function checkAgregar(valor, cantidad) {
-    resultado.innerHTML += "<br /> SE AGREGO: <br /> <hr>";
+    resultado.innerHTML += "<br /> SE AGREGO: "+cantidad+" BILLETES DE BS "+valor+"<br /> <hr>";
     for (e of agregado) {
         for (var i = 0; i < e.cantidad; i++) {
             resultado.innerHTML += "<img style='padding: 10px; text-align: right;' src=" + e.imagen.src + " />";
